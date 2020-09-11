@@ -9,34 +9,6 @@ public class Main {
 		public static final double POST_CONSTRUCTION = 2600000;
 		public static final double PAINT = 980000;
 
-
-		static Scanner input = new Scanner (System.in);
-		static  int numberMaterials = getNumberMaterials(input);
-		
-		
-		static String [] designStage = new String [numberMaterials];
-		static String [] postConstruction = new String[numberMaterials];
-		static String [] paint = new String[numberMaterials];
-
-	  
-	   static Double [] homeCenter = new Double[numberMaterials];
-	   static Double [] ferreteriaCentro = new Double[numberMaterials];
-	   static Double [] ferreteriaBarrio = new Double [numberMaterials];
-
-	   static Double [] bestPrice = new Double[numberMaterials];
-
-	    
-		static String material = "";
-		static double precioMaterial = 0.0;
-
-		static boolean repeat = true;
-		static int option = 0;
-		static String answer = "";
-		static String [] bestPlace = new String [numberMaterials] "";
-		static Operation op = new Operation();
-
-
-
 	public static int getNumberMaterials(Scanner input){
 
 		int numberMaterials;
@@ -46,9 +18,7 @@ public class Main {
 		input.nextLine();
 
 		return numberMaterials; 
-
 	}
-
 
 	public static String getLocation(Scanner input){
 
@@ -61,48 +31,89 @@ public class Main {
 
 	}
 
-		
-	public static void main(String [] args){
-	
+	public static String getName(){
+
 		Scanner input = new Scanner (System.in);
 
+		System.out.println("Ingrese nombre del material:");
+		String name = input.next();
 
-		System.out.println("Ingrese las siguientes caracteristicas del material");
+		return name;
+
+		}
+
+	public static int getCategory(){
+
+		Scanner input = new Scanner (System.in);
+
+		System.out.println("Obra negra  [1]");
+		System.out.println("Obra blanca [2]");
+		System.out.println("Pintura     [3]");
+		int category = input.nextInt();
+
+		return category;
+
+	}
+
+	public static void main(String [] args){
+
+		Scanner input = new Scanner (System.in);
+
+		int numberMaterials = getNumberMaterials(input);
+		
+
+		String [] designStage = new String [numberMaterials];
+		String [] postConstruction = new String[numberMaterials];
+		String [] paint = new String[numberMaterials];
+
+	  
+	    Double [] homeCenter = new Double[numberMaterials];
+	    Double [] ferreteriaCentro = new Double[numberMaterials];
+	    Double [] ferreteriaBarrio = new Double [numberMaterials];
+
+	    Double [] bestPrice = new Double[numberMaterials];
+        String [] bestPlace = new String [numberMaterials];
+	    
+		String material = "";
+		String name = "";
+		double materialPrice = 0.0;
+
+		boolean repeat = true;
+		int category = 0;
+		String answer = "";
+		
+		Operation op = new Operation();
 
 
-			for (int i = 0; repeat == true; i++){
+			for (int i = 0; i=true; i++){
 
-			System.out.println("Material: " +i+1);
-			System.out.println(); 
-			System.out.println("Obra negra  [1]");
-			System.out.println("Obra blanca [2]");
-			System.out.println("Pintura     [3]");
-			option = input.nextInt();
+			category = getCategory();
 
-			switch(option) {
+			System.out.print("Material "+ (i+1) + " ");
+
+			switch(category) {
 
 				case 1 :
 
-					System.out.println("Ingrese el nombre del material");
-					designStage[i]=input.next();
+					name = getName();
+					designStage[i]=name;
 
 					break;
 
 				case 2 :
 
-					System.out.println("Ingrese el nombre del material");
-					postConstruction[i]=input.next();
+					name = getName();
+					postConstruction[i]=name;
 					break;
 
 				case 3 :
 
-					System.out.println("Ingrese el nombre del material");
-					paint[i]=input.next();
+					name = getName();
+					paint[i]=name;
 
 					break;
 
 				default : 
-
 					System.out.println("Esa opcion no existe");
 					i = 0;
 
@@ -123,58 +134,16 @@ public class Main {
 			answer = input.next();
 
 			if (answer.equals("n"))
-				repeat = false ;	
-
+				 repeat = false;
 			}
+
+		
 
 			for (int x = 0; x < numberMaterials;x++){
 
 				bestPrice[x] = op.bestPrice(homeCenter[x],ferreteriaCentro[x],ferreteriaBarrio[x]);
 
-			
-				if (bestPrice[x]==0){
-
-					bestPlace [x] = "Home Center,Ferreteria del Centro, Ferreteria del Bariio";
-				}
-
-				if (bestPrice[x] == homeCenter[x]) {
-
-					bestPlace [x] = "Home Center";
-				}
-
-				if (bestPrice[x] == ferreteriaCentro[x]){
-
-					bestPlace [x] = "Ferreteria del Centro";
-				}
-
-				if (bestPrice[x] == ferreteriaBarrio[x]){
-
-					bestPlace [x] = "Ferreteria del Barrio";
-				}
-
-				if (bestPrice[x]==ferreteriaBarrio[x] && bestPrice[x] == ferreteriaCentro[x]){
-
-					bestPlace[x]= "Ferreteria del Barrio y Ferreteria del Centro";
-
-				}
-
-				if (bestPrice[x]==ferreteriaBarrio[x] && bestPrice[x] == homeCenter[x]){
-
-					bestPlace[x]= "Ferreteria del Barrio y Ferreteria del Centro";
-
-				}
-
-				if (bestPrice[x]==ferreteriaCentro[x] && bestPrice[x] == homeCenter[x]){
-
-					bestPlace[x]= "Ferreteria del Barrio y Ferreteria del Centro";
-
-				}
-	
-
-	
-
-	
-
+				bestPlace[x] = op.bestPlace(bestPrice[x], homeCenter[x], ferreteriaBarrio[x], ferreteriaCentro[x]);
 
 
 			}

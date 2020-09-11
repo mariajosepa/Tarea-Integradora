@@ -13,7 +13,7 @@ public class Operation {
 
 	public double bestPrice(double a, double b, double c){
 
-		double lowest = 0;;
+		double lowest = 0;
 
 			if (b < a && b < c){
 
@@ -34,36 +34,50 @@ public class Operation {
 			}
 
 		return lowest;
-
-
 
 		}
 
 
-	public String bestPlace(double a, double b, double c){
+	public String bestPlace(double bestPrice, double homeCenter, double  ferreteriaBarrio, double ferreteriaCentro){
 
-		double lowest = 0;;
+				String bestPlace = "";
 
-			if (b < a && b < c){
+				if (bestPrice==0){
 
-				lowest = b;
+					bestPlace = "Home Center,Ferreteria del Centro, Ferreteria del Bariio";
+				}
 
-			}
+				if (bestPrice == homeCenter) {
 
-			if (c < a && c < b){
+					bestPlace = "Home Center";
+				}
 
-				lowest = c;
-			}
+				if (bestPrice== ferreteriaCentro){
 
+					bestPlace = "Ferreteria del Centro";
+				}
 
-			if (a < b && a < c){
+				if (bestPrice== ferreteriaBarrio){
 
-				lowest = a;
+					bestPlace = "Ferreteria del Barrio";
+				}
 
-			}
+				if (bestPrice==ferreteriaBarrio && bestPrice == ferreteriaCentro){
 
-		return lowest;
+					bestPlace = "Ferreteria del Barrio o Ferreteria del Centro";
+				}
 
+				if (bestPrice==ferreteriaBarrio && bestPrice == homeCenter){
+
+					bestPlace= "Ferreteria del Barrio o Home Center";
+				}
+
+				if (bestPrice==ferreteriaCentro && bestPrice == homeCenter){
+
+					bestPlace = "Ferreteria del Centro o Home Center";
+				}
+
+					return bestPlace;
 
 
 		}
