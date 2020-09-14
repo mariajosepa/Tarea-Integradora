@@ -9,9 +9,10 @@ public class Main {
 		public static final double POST_CONSTRUCTION = 2600000;
 		public static final double PAINT = 980000;
 
-	public static int getNumberMaterials(Scanner input){
+	public static int getNumberMaterials(){
 
 		int numberMaterials;
+		Scanner input = new Scanner(System.in);
 
 		System.out.println("Ingrese el numero de materiales que necesita");
 		numberMaterials = input.nextInt();
@@ -20,22 +21,45 @@ public class Main {
 		return numberMaterials; 
 	}
 
-	public static String getLocation(Scanner input){
+	public static String getLocation(){
 
-		String location;
 
-		System.out.println("Ingrese su ubicacion [n][c][s]");
+		Scanner input = new Scanner(System.in);
+
+		boolean wrongInput = true;
+		String location = "";
+
+		while (wrongInput == true){
+
+		System.out.println("Ingrese su ubicacion");
+
+		System.out.println("Norte	    [n]");
+		System.out.println("Centro      [c]");
+		System.out.println("Sur         [s]");
+
 		location = input.next();
 
-		return location;
+		if (!location.equalsIgnoreCase("n") && !location.equalsIgnoreCase("c") && !location.equalsIgnoreCase("s")){
 
+			System.out.println("Esa ubicacion no es valida");
+			wrongInput = true;
+		}
+
+		else 
+		{
+
+			wrongInput = false;
+		}
+
+	}
+		return location;
 	}
 
 	public static String getName(){
 
-		Scanner input = new Scanner (System.in);
+		Scanner input = new Scanner(System.in);
 
-		System.out.println("Ingrese nombre del material:");
+		System.out.println("Ingrese nombre del material: ");
 		String name = input.next();
 
 		return name;
@@ -44,7 +68,9 @@ public class Main {
 
 	public static int getCategory(){
 
-		Scanner input = new Scanner (System.in);
+		Scanner input = new Scanner(System.in);
+
+		System.out.println("Ingrese categoria del material: ");
 
 		System.out.println("Obra negra  [1]");
 		System.out.println("Obra blanca [2]");
@@ -55,88 +81,62 @@ public class Main {
 
 	}
 
+
 	public static void main(String [] args){
 
 		Scanner input = new Scanner (System.in);
 
-		int numberMaterials = getNumberMaterials(input);
-		
+		int numberMaterials = getNumberMaterials();
 
+		String [] materials = new String [numberMaterials];
 		String [] designStage = new String [numberMaterials];
 		String [] postConstruction = new String[numberMaterials];
 		String [] paint = new String[numberMaterials];
 
 	  
-	    Double [] homeCenter = new Double[numberMaterials];
-	    Double [] ferreteriaCentro = new Double[numberMaterials];
-	    Double [] ferreteriaBarrio = new Double [numberMaterials];
+	    double [] homeCenter = new double[numberMaterials];
+	    double [] ferreteriaCentro = new double[numberMaterials];
+	    double [] ferreteriaBarrio = new double [numberMaterials];
 
-	    Double [] bestPrice = new Double[numberMaterials];
+	    double [] bestPrice = new double[numberMaterials];
         String [] bestPlace = new String [numberMaterials];
 	    
-		String material = "";
-		String name = "";
-		double materialPrice = 0.0;
-
-		boolean repeat = true;
 		int category = 0;
-		String answer = "";
+
+		double total = 0;
 		
 		Operation op = new Operation();
 
+		String location = getLocation();
 
-			for (int i = 0; i=true; i++){
+		
+
+		for (int i = 0; i<numberMaterials; i++){
+
+			materials[i] = getName();
 
 			category = getCategory();
 
-			System.out.print("Material "+ (i+1) + " ");
+			System.out.println("Ingrese precio del material en Home Center");
+			homeCenter[i]=input.nextDouble();
 
-			switch(category) {
+			System.out.println("Ingrese precio del material en Ferreteria del Centro");
+			ferreteriaCentro[i]=input.nextDouble();
 
-				case 1 :
-
-					name = getName();
-					designStage[i]=name;
-
-					break;
-
-				case 2 :
-
-					name = getName();
-					postConstruction[i]=name;
-					break;
-
-				case 3 :
-
-					name = getName();
-					paint[i]=name;
-
-					break;
-
-				default : 
-					System.out.println("Esa opcion no existe");
-					i = 0;
-
-			}
-
-					System.out.println("Ingrese precio del material en Home Center");
-					homeCenter[i]=input.nextDouble();
-
-					System.out.println("Ingrese precio del material en Ferreteria del Centro");
-					ferreteriaCentro[i]=input.nextDouble();
-
-					System.out.println("Ingrese precio del material en Ferreteria del Barrio");
-					ferreteriaBarrio[i]=input.nextDouble();
+			System.out.println("Ingrese precio del material en Ferreteria del Barrio");
+			ferreteriaBarrio[i]=input.nextDouble();
 
 
+			if (category == 1)
+				designStage[i]=materials[i];
 
-			System.out.println("Desea ingresar otro material [s] [n]");
-			answer = input.next();
+			if(category == 2)
+				postConstruction[i]=materials[i];
 
-			if (answer.equals("n"))
-				 repeat = false;
-			}
+			if(category==3)
+				paint[i]=materials[i];
 
+		}
 		
 
 			for (int x = 0; x < numberMaterials;x++){
@@ -145,14 +145,28 @@ public class Main {
 
 				bestPlace[x] = op.bestPlace(bestPrice[x], homeCenter[x], ferreteriaBarrio[x], ferreteriaCentro[x]);
 
-
 			}
 
 
+			
+
+			System.out.println("Materiales de OBRA NEGRA:  ");
+			op.asignPlace(numberMaterials, designStage ,materials, bestPrice, bestPlace);
+
+
+			System.out.println("Materiales de OBRA BLANCA:  ");
+			op.asignPlace(numberMaterials, postConstruction, materials, bestPrice, bestPlace);
+
+
+			System.out.println("Materiales de PINTURA:  ");
+			op.asignPlace(numberMaterials, paint, materials, bestPrice, bestPlace);
 
 
 
-	
+       total = op.sumTotal(bestPrice, location);
+       System.out.println("El total a pagar es de  " + (total + DESIGN_STAGE + POST_CONSTRUCTION + PAINT));
+
+
+
 	}
-
-}
+}	
